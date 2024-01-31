@@ -175,7 +175,8 @@ class MenuBar extends React.Component {
             'handleLanguageMouseUp',
             'handleRestoreOption',
             'getSaveToComputerHandler',
-            'restoreOptionMessage'
+            'restoreOptionMessage',
+            'loadPredefinedFile'
         ]);
     }
     componentDidMount () {
@@ -219,6 +220,34 @@ class MenuBar extends React.Component {
             waitForUpdate(false); // immediately transition to project page
         }
     }
+
+    loadPredefinedFile () {
+        const filePath = 'https://codingjrgfs.s3.ap-south-1.amazonaws.com/games/demo_1.sb3'; // Replace with the URL of your file
+
+        // Fetch the file from the URL
+        fetch(filePath)
+            .then(response => {
+                // Check if the request is successful
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.arrayBuffer();
+            })
+            .then(buffer => {
+                // Load the project into the Scratch VM
+                this.props.vm.loadProject(buffer)
+                    .then(() => {
+                        console.log('Project loaded successfully');
+                    })
+                    .catch(error => {
+                        console.error('Failed to load project into Scratch VM', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Failed to fetch the file', error);
+            });
+    }
+
     handleClickShare (waitForUpdate) {
         if (!this.props.isShared) {
             if (this.props.canShare) { // save before transitioning to project page
@@ -554,7 +583,7 @@ class MenuBar extends React.Component {
                             >
                                 <MenuSection>
                                     <MenuItem
-                                        onClick={''}
+                                        onClick={this.loadPredefinedFile}
                                     // eslint-disable-next-line react/jsx-no-literals
                                     >
                                         Demo 1
