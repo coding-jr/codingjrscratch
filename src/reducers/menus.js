@@ -5,6 +5,7 @@ const MENU_ABOUT = 'aboutMenu';
 const MENU_ACCOUNT = 'accountMenu';
 const MENU_FILE = 'fileMenu';
 const MENU_EDIT = 'editMenu';
+const MENU_PROJECT = 'projectMenu';
 const MENU_LANGUAGE = 'languageMenu';
 const MENU_LOGIN = 'loginMenu';
 
@@ -51,8 +52,11 @@ const openFileMenu = () => openMenu(MENU_FILE);
 const closeFileMenu = () => closeMenu(MENU_FILE);
 const fileMenuOpen = state => state.scratchGui.menus[MENU_FILE];
 const openEditMenu = () => openMenu(MENU_EDIT);
+const openProjectsMenu = () => openMenu(MENU_PROJECT);
 const closeEditMenu = () => closeMenu(MENU_EDIT);
+const closeProjectMenu = () => closeMenu(MENU_PROJECT);
 const editMenuOpen = state => state.scratchGui.menus[MENU_EDIT];
+const projectMenuOpen = state => state.scratchGui.menus[MENU_PROJECT];
 const openLanguageMenu = () => openMenu(MENU_LANGUAGE);
 const closeLanguageMenu = () => closeMenu(MENU_LANGUAGE);
 const languageMenuOpen = state => state.scratchGui.menus[MENU_LANGUAGE];
@@ -73,8 +77,11 @@ export {
     closeFileMenu,
     fileMenuOpen,
     openEditMenu,
+    openProjectsMenu,
     closeEditMenu,
+    closeProjectMenu,
     editMenuOpen,
+    projectMenuOpen,
     openLanguageMenu,
     closeLanguageMenu,
     languageMenuOpen,

@@ -11,13 +11,14 @@ import VM from 'scratch-vm';
 
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
-import CommunityButton from './community-button.jsx';
-import ShareButton from './share-button.jsx';
+// import CommunityButton from './community-button.jsx';
+// import ShareButton from './share-button.jsx';
 import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
 import Divider from '../divider/divider.jsx';
 import LanguageSelector from '../../containers/language-selector.jsx';
 import SaveStatus from './save-status.jsx';
-import ProjectWatcher from '../../containers/project-watcher.jsx';
+// import {loadFile} from '../../lib/file-load.js';
+// import ProjectWatcher from '../../containers/project-watcher.jsx';
 import MenuBarMenu from './menu-bar-menu.jsx';
 import {MenuItem, MenuSection} from '../menu/menu.jsx';
 import ProjectTitleInput from './project-title-input.jsx';
@@ -51,8 +52,11 @@ import {
     closeFileMenu,
     fileMenuOpen,
     openEditMenu,
+    openProjectsMenu,
     closeEditMenu,
+    closeProjectMenu,
     editMenuOpen,
+    projectMenuOpen,
     openLanguageMenu,
     closeLanguageMenu,
     languageMenuOpen,
@@ -67,7 +71,7 @@ import styles from './menu-bar.css';
 
 import helpIcon from '../../lib/assets/icon--tutorials.svg';
 import mystuffIcon from './icon--mystuff.png';
-import profileIcon from './icon--profile.png';
+// import profileIcon from './icon--profile.png';
 import remixIcon from './icon--remix.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import languageIcon from '../language-selector/language-icon.svg';
@@ -364,19 +368,19 @@ class MenuBar extends React.Component {
                 id="gui.menuBar.new"
             />
         );
-        const remixButton = (
-            <Button
-                className={classNames(
-                    styles.menuBarButton,
-                    styles.remixButton
-                )}
-                iconClassName={styles.remixButtonIcon}
-                iconSrc={remixIcon}
-                onClick={this.handleClickRemix}
-            >
-                {remixMessage}
-            </Button>
-        );
+        // const remixButton = (
+        //     <Button
+        //         className={classNames(
+        //             styles.menuBarButton,
+        //             styles.remixButton
+        //         )}
+        //         iconClassName={styles.remixButtonIcon}
+        //         iconSrc={remixIcon}
+        //         onClick={this.handleClickRemix}
+        //     >
+        //         {remixMessage}
+        //     </Button>
+        // );
         // Show the About button only if we have a handler for it (like in the desktop app)
         const aboutButton = this.buildAboutMenu(this.props.onClickAbout);
         return (
@@ -389,15 +393,6 @@ class MenuBar extends React.Component {
                 <div className={styles.mainMenu}>
                     <div className={styles.fileGroup}>
                         <div className={classNames(styles.menuBarItem)}>
-                            <img
-                                alt="Scratch"
-                                className={classNames(styles.scratchLogo, {
-                                    [styles.clickable]: typeof this.props.onClickLogo !== 'undefined'
-                                })}
-                                draggable={false}
-                                src={this.props.logo}
-                                onClick={this.props.onClickLogo}
-                            />
                             <img
                                 alt="Scratch"
                                 className={classNames(styles.scratchLogo, {
@@ -535,6 +530,35 @@ class MenuBar extends React.Component {
                                             )}
                                         </MenuItem>
                                     )}</TurboMode>
+                                </MenuSection>
+                            </MenuBarMenu>
+                        </div>
+                        <div
+                            className={classNames(styles.menuBarItem, styles.hoverable, {
+                                [styles.active]: this.props.projectMenuOpen
+                            })}
+                            onMouseUp={this.props.onClickProjects}
+                        >
+                            <div className={classNames(styles.editMenu)}>
+                                <FormattedMessage
+                                    defaultMessage="Projects"
+                                    description="Projects for practice"
+                                    id="gui.menuBar.projects"
+                                />
+                            </div>
+                            <MenuBarMenu
+                                className={classNames(styles.menuBarMenu)}
+                                open={this.props.projectMenuOpen}
+                                place={this.props.isRtl ? 'left' : 'right'}
+                                onRequestClose={this.props.onRequestCloseProjects}
+                            >
+                                <MenuSection>
+                                    <MenuItem
+                                        onClick={''}
+                                    // eslint-disable-next-line react/jsx-no-literals
+                                    >
+                                        Demo 1
+                                    </MenuItem>
                                 </MenuSection>
                             </MenuBarMenu>
                         </div>
@@ -776,6 +800,7 @@ MenuBar.propTypes = {
     className: PropTypes.string,
     confirmReadyToReplaceProject: PropTypes.func,
     editMenuOpen: PropTypes.bool,
+    projectMenuOpen: PropTypes.bool,
     enableCommunity: PropTypes.bool,
     fileMenuOpen: PropTypes.bool,
     intl: intlShape,
@@ -798,6 +823,7 @@ MenuBar.propTypes = {
     ]),
     onClickAccount: PropTypes.func,
     onClickEdit: PropTypes.func,
+    onClickProjects: PropTypes.func,
     onClickFile: PropTypes.func,
     onClickLanguage: PropTypes.func,
     onClickLogin: PropTypes.func,
@@ -814,6 +840,7 @@ MenuBar.propTypes = {
     onRequestCloseAbout: PropTypes.func,
     onRequestCloseAccount: PropTypes.func,
     onRequestCloseEdit: PropTypes.func,
+    onRequestCloseProjects: PropTypes.func,
     onRequestCloseFile: PropTypes.func,
     onRequestCloseLanguage: PropTypes.func,
     onRequestCloseLogin: PropTypes.func,
@@ -844,6 +871,7 @@ const mapStateToProps = (state, ownProps) => {
         accountMenuOpen: accountMenuOpen(state),
         fileMenuOpen: fileMenuOpen(state),
         editMenuOpen: editMenuOpen(state),
+        projectMenuOpen: projectMenuOpen(state),
         isRtl: state.locales.isRtl,
         isUpdating: getIsUpdating(loadingState),
         isShowingProject: getIsShowingProject(loadingState),
@@ -867,7 +895,9 @@ const mapDispatchToProps = dispatch => ({
     onClickFile: () => dispatch(openFileMenu()),
     onRequestCloseFile: () => dispatch(closeFileMenu()),
     onClickEdit: () => dispatch(openEditMenu()),
+    onClickProjects: () => dispatch(openProjectsMenu()),
     onRequestCloseEdit: () => dispatch(closeEditMenu()),
+    onRequestCloseProjects: () => dispatch(closeProjectMenu()),
     onClickLanguage: () => dispatch(openLanguageMenu()),
     onRequestCloseLanguage: () => dispatch(closeLanguageMenu()),
     onClickLogin: () => dispatch(openLoginMenu()),

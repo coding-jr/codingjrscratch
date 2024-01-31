@@ -17,6 +17,7 @@ import TargetPaneComponent from '../components/target-pane/target-pane.jsx';
 import {BLOCKS_DEFAULT_SCALE} from '../lib/layout-constants';
 import spriteLibraryContent from '../lib/libraries/sprites.json';
 import {handleFileUpload, spriteUpload} from '../lib/file-uploader.js';
+import {loadFile} from '../lib/file-load.js';
 import sharedMessages from '../lib/shared-messages';
 import {emptySprite} from '../lib/empty-assets';
 import {highlightTarget} from '../reducers/targets';
@@ -46,6 +47,7 @@ class TargetPane extends React.Component {
             'handleSurpriseSpriteClick',
             'handlePaintSpriteClick',
             'handleFileUploadClick',
+            'handleFileLoadClick',
             'handleSpriteUpload',
             'setFileInput'
         ]);
@@ -136,6 +138,9 @@ class TargetPane extends React.Component {
     }
     handleFileUploadClick () {
         this.fileInput.click();
+    }
+    handleFileLoadClick (path) {
+        this.fileInput.click(path);
     }
     handleSpriteUpload (e) {
         const storage = this.props.vm.runtime.storage;
@@ -264,6 +269,7 @@ class TargetPane extends React.Component {
                 onDuplicateSprite={this.handleDuplicateSprite}
                 onExportSprite={this.handleExportSprite}
                 onFileUploadClick={this.handleFileUploadClick}
+                onFileLoadClick={this.handleFileLoadClick}
                 onPaintSpriteClick={this.handlePaintSpriteClick}
                 onSelectSprite={this.handleSelectSprite}
                 onSpriteUpload={this.handleSpriteUpload}
