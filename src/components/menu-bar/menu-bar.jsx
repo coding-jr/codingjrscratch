@@ -1,7 +1,10 @@
+/* eslint-disable react/jsx-no-literals */
+/* eslint-disable react/jsx-no-bind */
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {setProjectTitle} from '../../reducers/project-title';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import bowser from 'bowser';
@@ -221,10 +224,7 @@ class MenuBar extends React.Component {
         }
     }
 
-    loadPredefinedFile () {
-        const filePath = 'https://codingjrgfs.s3.ap-south-1.amazonaws.com/games/demo_1.sb3'; // Replace with the URL of your file
-
-        // Fetch the file from the URL
+    loadPredefinedFile (filePath, title) {
         fetch(filePath)
             .then(response => {
                 // Check if the request is successful
@@ -234,14 +234,24 @@ class MenuBar extends React.Component {
                 return response.arrayBuffer();
             })
             .then(buffer => {
-                // Load the project into the Scratch VM
                 this.props.vm.loadProject(buffer)
                     .then(() => {
-                        console.log('Project loaded successfully');
+                        if (title) {
+                            this.props.onSetProjectTitle(title);
+                        }
                     })
                     .catch(error => {
                         console.error('Failed to load project into Scratch VM', error);
                     });
+                // Load the project into the Scratch VM
+                // this.props.vm.loadProject(buffer)
+                //     .then(() => {
+                //         setProjectTitle(title);
+                //         console.log('Project loaded successfully');
+                //     })
+                //     .catch(error => {
+                //         console.error('Failed to load project into Scratch VM', error);
+                //     });
             })
             .catch(error => {
                 console.error('Failed to fetch the file', error);
@@ -369,6 +379,10 @@ class MenuBar extends React.Component {
         };
     }
     render () {
+        const {
+            /* eslint-disable no-unused-vars */
+            onSetProjectTitle,
+        } = this.props;
         const saveNowMessage = (
             <FormattedMessage
                 defaultMessage="Save now"
@@ -583,10 +597,104 @@ class MenuBar extends React.Component {
                             >
                                 <MenuSection>
                                     <MenuItem
-                                        onClick={this.loadPredefinedFile}
-                                    // eslint-disable-next-line react/jsx-no-literals
+                                        onClick={() => this.loadPredefinedFile('static/projects/pacman.sb3', 'Pac MAN')}
                                     >
-                                        Demo 1
+                                        Pac MAN
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/fruit_ninja.sb3', 'Fruit Ninja')}
+                                    >
+                                        Fruit Ninja
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/hungry_snake.sb3', 'Hungry Snake')}
+                                    >
+                                        Hungry Snake
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/hoppy_frog.sb3', 'Hoppy Frog')}
+                                    >
+                                        Hoppy Frog
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/sea_race.sb3', 'Sea Race')}
+                                    >
+                                        Sea Race
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/ping_pong.sb3', 'Ping Pong')}
+                                    >
+                                        Ping Pong
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/dinosaur_jump.sb3', 'Dinosaur Jump')}
+                                    >
+                                        Dinosaur Jump
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/car_racing.sb3', 'Car Racing')}
+                                    >
+                                        Car Racing
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/crossy_road.sb3', 'Crossy Road')}
+                                    >
+                                        Crossy Road
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/flying_shooter.sb3', 'Flying Shooter')}
+                                    >
+                                        Flying Shooter
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/space_smash.sb3', 'Space Smash')}
+                                    >
+                                        Space Smash
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/rock_band.sb3', 'Rock Band')}
+                                    >
+                                        Rock Band
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/catch_the_puffer_fish.sb3', 'Catch The Puffer Fish')}
+                                    >
+                                        Catch The Puffer Fish
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/own_sound.sb3', 'Own Sound')}
+                                    >
+                                        Own Sound
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/talking_animation.sb3', 'Talking Animation')}
+                                    >
+                                        Talking Animation
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/grow_and_shrink.sb3', 'Grow And Shrink')}
+                                    >
+                                        Grow And Shrink
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/hatch_or_rescue.sb3', 'Hatch or Rescue')}
+                                    >
+                                        Hatch or Rescue
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/apple_frenzy.sb3', 'Apple Frenzy')}
+                                    >
+                                        Apple Frenzy
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/fruit_collector.sb3', 'Fruit Collector')}
+                                    >
+                                        Fruit Collector
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => this.loadPredefinedFile('static/projects/underwater_adventure.sb3', 'Underwater Adventure')}
+                                    >
+                                        Underwater Adventure
                                     </MenuItem>
                                 </MenuSection>
                             </MenuBarMenu>
@@ -839,6 +947,7 @@ MenuBar.propTypes = {
     isUpdating: PropTypes.bool,
     languageMenuOpen: PropTypes.bool,
     locale: PropTypes.string.isRequired,
+    onSetProjectTitle: PropTypes.func,
     loginMenuOpen: PropTypes.bool,
     logo: PropTypes.string,
     onClickAbout: PropTypes.oneOfType([
@@ -933,6 +1042,7 @@ const mapDispatchToProps = dispatch => ({
     onRequestCloseLogin: () => dispatch(closeLoginMenu()),
     onRequestOpenAbout: () => dispatch(openAboutMenu()),
     onRequestCloseAbout: () => dispatch(closeAboutMenu()),
+    onSetProjectTitle: title => dispatch(setProjectTitle(title)),
     onClickNew: needSave => dispatch(requestNewProject(needSave)),
     onClickRemix: () => dispatch(remixProject()),
     onClickSave: () => dispatch(manualUpdateProject()),
